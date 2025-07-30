@@ -8,6 +8,7 @@ It includes:
 * 🔐 Prompt injection defense
 * ⚡ Rapid JSON API endpoint
 * 🧪 AI-safe JSON validation with `zod`
+* 🧠 Short-term memory with few-shot examples
 
 ---
 
@@ -138,6 +139,54 @@ If GPT returns invalid JSON or a malformed structure:
 
 ---
 
+## 🧠 MODULE 4: Few-Shot Learning & Memory Simulation
+
+### ✅ What’s Covered
+
+* Simulating short-term memory (2-turn context)
+* Using few-shot examples to influence GPT output
+* Structuring input history without fine-tuning
+
+### 🧪 Example Flow
+
+1. User says:
+
+```json
+{ "username": "marc", "message": "How do tsunamis form?" }
+```
+
+2. GPT replies with topic, summary, fun fact
+
+3. User then says:
+
+```json
+{ "username": "marc", "message": "Compare it to hurricanes." }
+```
+
+4. GPT remembers the tsunami question and gives a comparison
+
+### 🧰 How It Works
+
+* A simple in-memory object (`userMemory`) stores last 2 Q\&A pairs per user
+* These are injected as few-shot examples before the new user message
+* Prompt looks like:
+
+```ts
+messages: [
+  { role: "system", content: systemPrompt },
+  { role: "user", content: "Previous Q" },
+  { role: "assistant", content: "Previous A" },
+  { role: "user", content: "Current message" }
+]
+```
+
+### ⚠️ Note
+
+* This memory is temporary — it resets on server restart
+* Ideal for early testing & prototyping
+
+---
+
 ## 🚀 Running the Server
 
 1. **Install deps**
@@ -160,12 +209,12 @@ npx tsx src/index.ts
 
 ---
 
-## ✅ Next Up: MODULE 4 – Few-Shot Learning & Memory
+## ✅ Next Up: MODULE 5 – Role-Based AI Personalities
 
 You’ll learn:
 
-* How to give GPT structured examples
-* How to simulate memory across messages
-* How to fine-tune output consistency
+* How to add custom personality per user
+* How to simulate different roles (friend, scientist, therapist, troll, etc.)
+* Let users choose who they’re “talking to”
 
 ---

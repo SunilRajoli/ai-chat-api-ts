@@ -7,15 +7,16 @@ It includes:
 * ✅ Clean prompt structure
 * 🔐 Prompt injection defense
 * ⚡ Rapid JSON API endpoint
-* 🧪 Ready for frontend, Postman, or curl
+* 🧪 AI-safe JSON validation with `zod`
 
 ---
 
-## 📆 Tech Stack
+## 📦 Tech Stack
 
 * **Node.js** + **TypeScript**
 * **Express.js** for routing
 * **OpenAI API** for LLM responses
+* **Zod** for AI output validation
 * **Dotenv** for secrets
 
 ---
@@ -74,7 +75,7 @@ It includes:
 
 > “I'm sorry, but I can't help with that.”
 
-### 🛠 How It Works
+### 🧰 How It Works
 
 * `systemPrompt`: locks in the AI's behavior
 * `userPrompt`: sanitized + wrapped to prevent role hijacking
@@ -82,12 +83,58 @@ It includes:
 
 ---
 
-## 🛡 Security Notes
+## 🔧 MODULE 3: AI-Safe JSON & Output Validation
 
-* Never interpolate user data into `system` prompts
-* Always wrap user input with clear instructions
-* Validate `username` and `message` on the backend
-* Avoid returning raw AI output to clients in sensitive apps
+### ✅ What’s Covered
+
+* Making GPT respond in pure, valid JSON
+* Defining a strict schema using `zod`
+* Parsing + validating GPT responses safely
+
+### 🧪 Example Request
+
+```json
+{
+  "username": "lucy",
+  "message": "How do volcanoes form?"
+}
+```
+
+### ✅ AI Output
+
+```json
+{
+  "topic": "Volcanoes",
+  "summary": "Volcanoes form when magma from within the Earth's upper mantle escapes through weak spots in the crust.",
+  "fun_fact": "The largest volcano in the solar system is Olympus Mons on Mars."
+}
+```
+
+### 📦 How It Works
+
+| Layer          | What it does                                |
+| -------------- | ------------------------------------------- |
+| `systemPrompt` | Forces the model to return only JSON        |
+| `userPrompt`   | Provides exact schema                       |
+| `JSON.parse()` | Parses string into object                   |
+| `zod.parse()`  | Validates structure, types, required fields |
+
+### 🔐 Safe Response Pattern
+
+* Parse GPT output
+* Validate with `zod`
+* Only return to client if structure matches
+* Else, return error
+
+### 🚨 Error Handling
+
+If GPT returns invalid JSON or a malformed structure:
+
+```json
+{
+  "error": "Invalid AI response format"
+}
+```
 
 ---
 
@@ -113,10 +160,12 @@ npx tsx src/index.ts
 
 ---
 
-## ✅ Next Up: MODULE 3 – AI-safe JSON & Output Validation
+## ✅ Next Up: MODULE 4 – Few-Shot Learning & Memory
 
 You’ll learn:
 
-* How to force GPT to return **JSON**
-* How to validate it with zod or custom logic
-* How to build AI-based data APIs that never break
+* How to give GPT structured examples
+* How to simulate memory across messages
+* How to fine-tune output consistency
+
+---
